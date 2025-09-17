@@ -6,7 +6,7 @@ services:
       - .env
     container_name: backend
     expose:
-      - "8080"  # 외부에 직접 노출하지 않고 내부 네트워크에서만 열림
+      - "8080:8080"  # 외부에 직접 노출하지 않고 내부 네트워크에서만 열림
     # environment:
     #   - SPRING_DATASOURCE_URL=jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/${MYSQL_DATABASE}
     #   - SPRING_DATASOURCE_USERNAME=${MYSQL_USER}
