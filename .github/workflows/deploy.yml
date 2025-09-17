@@ -34,7 +34,7 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           port: ${{ secrets.SERVER_PORT }}   # 보통 22
           key_path: private_key              # key 대신 key_path
-          source: "."
+          source: "./"
           target: "~/project"
           debug: true
 
