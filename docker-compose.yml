@@ -15,7 +15,7 @@ services:
       - db
 
   frontend:
-    build: ./frontend
+    build: ./frontend/psytest
     container_name: frontend
     depends_on:
       - backend
