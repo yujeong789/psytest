@@ -1,16 +1,23 @@
 # 1단계: 빌드
 FROM node:18 AS build
 WORKDIR /app
-COPY package*.json pnpm-lock.yaml* ./
+
 RUN npm install -g pnpm
-RUN pnpm install
-COPY . .
+
+# package.json, pnpm-lock.yaml을 frontend/psytest에서 가져옴
+COPY frontend/psytest/package.json frontend/psytest/pnpm-lock.yaml ./
+
+RUN pnpm install --frozen-lockfile=false
+
+# 소스 전체 복사
+COPY frontend/psytest . 
+
 RUN pnpm run build
 
 # 2단계: Nginx로 정적 파일 서빙
 FROM nginx:1.25-alpine
 COPY --from=build /app/dist /usr/share/nginx/html
-COPY ./nginx.conf /etc/nginx/conf.d/default.conf
+COPY frontend/psytest/nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
