@@ -23,7 +23,6 @@ jobs:
       # 3. SSH 키 저장 (Secrets -> 파일)
       - name: Save SSH key
         run: |
-          mkdir -p ~/.ssh
           echo "${{ secrets.SERVER_SSH_KEY }}" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
 
@@ -34,7 +33,7 @@ jobs:
           host: ${{ secrets.SERVER_HOST }}   # 홈서버 Tailscale IP (예: 100.x.x.x)
           username: ${{ secrets.SERVER_USER }}
           port: ${{ secrets.SERVER_PORT }}   # 보통 22
-          key_path: ~/.ssh/deploy_key
+          key_path: private_key
           source: "./"
           target: "~/project"
           debug: true
