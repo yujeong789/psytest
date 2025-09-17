@@ -7,6 +7,9 @@ RUN npm install -g pnpm
 # package.json, pnpm-lock.yaml을 frontend/psytest에서 가져옴
 COPY frontend/psytest/package.json frontend/psytest/pnpm-lock.yaml ./
 
+# 여기서 .env도 복사 (중요!)
+COPY frontend/psytest/.env ./
+
 RUN pnpm install --frozen-lockfile=false
 
 # 소스 전체 복사
