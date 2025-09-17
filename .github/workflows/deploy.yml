@@ -1,0 +1,49 @@
+name: Deploy to Server
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. 소스코드 가져오기
+      - name: Checkout source code
+        uses: actions/checkout@v3
+
+      # 2. GitHub Actions 러너를 Tailscale 네트워크에 붙이기
+      - name: Set up Tailscale
+        uses: tailscale/github-action@v2
+        with:
+          authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
+
+      # 3. 서버에 파일 복사 (Tailscale IP 사용)
+      - name: Copy files to server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SERVER_HOST }}   # 홈서버 Tailscale IP (예: 100.x.x.x)
+          username: ${{ secrets.SERVER_USER }}
+          port: ${{ secrets.SERVER_PORT }}   # 보통 22
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          source: "."
+          target: "~/project"
+
+      # 4. 서버에서 docker compose 실행
+      - name: Run docker compose on server
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          port: ${{ secrets.SERVER_PORT }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          script: |
+            cd ~/project
+            echo "MYSQL_USER=${{ secrets.MYSQL_USER }}" > .env
+            echo "MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}" >> .env
+            echo "MYSQL_DATABASE=${{ secrets.MYSQL_DATABASE }}" >> .env
+            echo "MYSQL_HOST=db" >> .env
+            echo "MYSQL_PORT=3306" >> .env
+            docker compose up -d --build
