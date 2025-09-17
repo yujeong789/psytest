@@ -37,6 +37,7 @@ jobs:
           source: "./"
           target: "~/project"
           debug: true
+          exclude: "private_key"
 
       # 5. 서버에서 docker compose 실행
       - name: Run docker compose on server
