@@ -20,26 +20,32 @@ jobs:
         with:
           authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
 
-      # 3. 서버에 파일 복사 (Tailscale IP 사용)
+      # 3. SSH 키 저장 (Secrets -> 파일)
+      - name: Save SSH key
+        run: |
+          echo "${{ secrets.SERVER_SSH_KEY }}" > private_key
+          chmod 600 private_key
+
+      # 4. 서버에 파일 복사 (Tailscale IP 사용)
       - name: Copy files to server
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.SERVER_HOST }}   # 홈서버 Tailscale IP (예: 100.x.x.x)
           username: ${{ secrets.SERVER_USER }}
           port: ${{ secrets.SERVER_PORT }}   # 보통 22
-          key: ${{ secrets.SERVER_SSH_KEY }}
+          key_path: private_key              # key 대신 key_path
           source: "."
           target: "~/project"
           debug: true
 
-      # 4. 서버에서 docker compose 실행
+      # 5. 서버에서 docker compose 실행
       - name: Run docker compose on server
         uses: appleboy/ssh-action@v0.1.10
         with:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
           port: ${{ secrets.SERVER_PORT }}
-          key: ${{ secrets.SERVER_SSH_KEY }}
+          key_path: private_key              # 여기도 key_path
           script: |
             cd ~/project
             echo "MYSQL_USER=${{ secrets.MYSQL_USER }}" > .env
