@@ -30,6 +30,7 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           source: "."
           target: "~/project"
+          debug: true
 
       # 4. 서버에서 docker compose 실행
       - name: Run docker compose on server
