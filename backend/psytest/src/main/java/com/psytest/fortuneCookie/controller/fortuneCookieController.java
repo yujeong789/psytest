@@ -19,7 +19,7 @@ public class fortuneCookieController {
     }
 
     @Operation(summary = "쿠키 깨트리기", description = "쿠키를 클릭해서 행운의 문구를 볼 수 있도록 데이터베이스에서 랜덤으로 가져옵니다.")
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<?> fortuneCookieOpen() {
         FortuneCookieResponse fortuneCookieResponse = fortuneCookieService.fortuneCookieOpen();
         return ResponseUtil.success(fortuneCookieResponse);
