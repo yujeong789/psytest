@@ -1,6 +1,6 @@
 // src/pages/fortune/FortunePage.tsx
 import { useNavigate } from "react-router-dom";
-import cookieImg from "@/assets/cookie.png";
+import cookieImg from "@/assets/cookie.svg";
 import { getFortuneCookie } from "@/lib/api/fortune";
 import { useState } from "react";
 
@@ -24,19 +24,19 @@ export default function FortunePage() {
 
     return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-[#fff5e6] text-center px-4">
-      <img src={cookieImg} alt="행운의 쿠키" className="w-40 sm:w-60 md:w-80" />
+      <img src={cookieImg} alt="행운의 쿠키" style={{ width: "35%", height: "auto" }} />
       <h1 className="mt-6 text-xl sm:text-2xl md:text-3xl font-bold">행운의 쿠키</h1>
 
       <button
         onClick={handleOpenCookie}
         disabled={loading}
-        className="mt-10 px-6 py-3 bg-orange-400 text-white rounded-lg shadow hover:bg-orange-500 disabled:opacity-50"
+        className="mt-5 px-6 py-3 bg-orange-400 text-white rounded-lg shadow hover:bg-orange-500 disabled:opacity-50"
       >
         {loading ? "열어보는 중..." : "열어보기"}
       </button>
       <button
         onClick={() => navigate("/")}
-        className="mt-10 px-6 py-3 bg-orange-400 text-white rounded-lg shadow hover:bg-orange-500"
+        className="mt-5 px-6 py-3 bg-orange-400 text-white rounded-lg shadow hover:bg-orange-500"
       >
         목록보기
       </button>
