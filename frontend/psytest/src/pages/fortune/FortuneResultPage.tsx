@@ -6,6 +6,7 @@ import { postFortuneCookieOpen, getFortuneCookieSharedResult, type FortunePayloa
 
 export default function FortuneResultPage() {
   const { id } = useParams(); // 공유 진입이면 값 있음
+  const isSharedView = !!id; // 공유링크로 진입 여부 체크
   const navigate = useNavigate();
 
   const [data, setData] = useState<FortunePayload | null>(null);
@@ -17,7 +18,7 @@ export default function FortuneResultPage() {
       try {
         setLoading(true);
         setError(null);
-        const res = id
+        const res = isSharedView
           ? await getFortuneCookieSharedResult(id) // 공유 링크로 복원
           : await postFortuneCookieOpen();         // 처음 뽑기 (URL 그대로)
         setData(res);
@@ -28,14 +29,14 @@ export default function FortuneResultPage() {
         setLoading(false);
       }
     })();
-  }, [id]);
+  }, [isSharedView, id]);
 
   const onShare = async () => {
     if (!data) return;
     const absolute = new URL(data.shareUrl, window.location.origin).toString();
     try {
       navigator.clipboard.writeText(absolute);
-      alert("링크가 클립보드에 복사되었습니다.");
+      // alert("링크가 클립보드에 복사되었습니다.");
       // 성공 토스트 등 추가 가능
     } catch {}
   };
@@ -69,11 +70,14 @@ export default function FortuneResultPage() {
       <h1 className="mt-6 text-xl sm:text-2xl md:text-3xl font-bold">{data!.fortune}</h1>
 
       <div className="mt-5 flex gap-3">
+        {/* 공유링크 타고온 경우에는 공유하기 버튼 삭제 */}
+        {!isSharedView && (
         <button onClick={onShare} className="text-sm px-3 py-3 bg-orange-400 text-white rounded-lg shadow hover:bg-orange-500">
           공유하기
         </button>
+          )}
         <button onClick={() => navigate("/fortuneCookie")} className="text-sm px-3 py-3 bg-orange-400 text-white rounded-lg shadow hover:bg-orange-500">
-          다시하기
+          {isSharedView ? "나도열기" : "다시하기"}
         </button>
         <button onClick={() => navigate("/")} className="text-sm px-3 py-3 bg-orange-400 text-white rounded-lg shadow hover:bg-orange-500">
           목록보기
