@@ -25,7 +25,7 @@ public class fortuneCookieCache {
         fortuneCookieRepository.findAll().forEach(entity ->
                 fortune.put(
                         entity.getFortuneCookieId(),
-                        new FortuneCookieCacheResponse(entity.fortuneCookieId, entity.getFortune())
+                        new FortuneCookieCacheResponse(entity.getFortuneCookieId(), entity.getFortune())
                         )
                 );
         log.info("🥨 포춘쿠키 캐싱이 완료되었습니다. size=" + fortune.size());
