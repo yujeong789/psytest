@@ -14,8 +14,8 @@ public class FortuneCookieEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Integer fortuneCookieId;
+    private Integer fortuneCookieId;
 
     @Column(nullable = false, length=1000)
-    public String fortune;
+    private String fortune;
 }

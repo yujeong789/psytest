@@ -2,6 +2,8 @@ package com.psytest.fortuneCookie.service;
 
 import com.psytest.fortuneCookie.dto.FortuneCookieResponse;
 import com.psytest.fortuneCookie.dto.FortuneCookieCacheResponse;
+import com.psytest.fortuneCookie.entity.FortuneShareEntity;
+import com.psytest.fortuneCookie.repository.fortuneShareRepository;
 import com.psytest.global.exception.ErrorCode;
 import com.psytest.global.exception.GlobalException;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,7 @@ import java.util.UUID;
 public class fortuneCookieService {
 
     private final fortuneCookieCache fortuneCookieCache;
+    private final fortuneShareRepository fortuneShareRepository;
 
     public FortuneCookieResponse fortuneCookieOpen() {
         log.info("🥨포춘쿠키를 깨트립니다.");
@@ -36,8 +39,30 @@ public class fortuneCookieService {
         }
 
         log.info("🥨 행운의 문구 : " + fortuneCookieCacheResponse.fortune());
+
+        FortuneShareEntity fortuneShareEntity = new FortuneShareEntity();
+        fortuneShareEntity.setFortuneCookieUuid(fortuneCookieUuid);
+        fortuneShareEntity.setFortuneCookieId(idx);
+        fortuneShareRepository.save(fortuneShareEntity);
+        log.info("🥨 DB 저장 성공했습니다.");
         return new FortuneCookieResponse(
                 fortuneCookieUuid,
+                fortuneCookieCacheResponse.fortune()
+        );
+    }
+
+    public FortuneCookieResponse getByShareId(UUID uuid) {
+        log.info("🥨 공유된 포춭쿠키 결과지를 가져옵니다");
+
+        // uuid로 fortune_id 찾기
+        FortuneShareEntity fortuneShareEntity = fortuneShareRepository.findById(uuid)
+                .orElseThrow(() -> new GlobalException(HttpStatus.NOT_FOUND, ErrorCode.DATA_NOT_FOUND));
+        log.info("🥨 포춘쿠키 아이디를 탐색했습니다. {}", fortuneShareEntity.getFortuneCookieId());
+
+        FortuneCookieCacheResponse fortuneCookieCacheResponse = fortuneCookieCache.getFortuneCookieOne(fortuneShareEntity.getFortuneCookieId());
+        log.info("🥨 포춘쿠키 문구를 탐색했습니다. {}", fortuneCookieCacheResponse.fortune());
+        return new FortuneCookieResponse(
+                fortuneShareEntity.getFortuneCookieUuid(),
                 fortuneCookieCacheResponse.fortune()
         );
     }
