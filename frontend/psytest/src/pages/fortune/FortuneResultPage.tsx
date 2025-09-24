@@ -18,7 +18,7 @@ export default function FortuneResultPage() {
       try {
         setLoading(true);
         setError(null);
-        const res = isSharedView
+        const res = id
           ? await getFortuneCookieSharedResult(id) // 공유 링크로 복원
           : await postFortuneCookieOpen();         // 처음 뽑기 (URL 그대로)
         setData(res);
