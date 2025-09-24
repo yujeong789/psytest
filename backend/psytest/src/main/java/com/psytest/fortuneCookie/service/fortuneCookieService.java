@@ -26,8 +26,8 @@ public class fortuneCookieService {
         log.info("🥨포춘쿠키를 깨트립니다.");
 
         log.info("🥨 랜덤 인덱스를 선택합니다.");
-        Random ramdom = new Random();
-        int idx = ramdom.nextInt(500)+1; // 1-500 사이의 랜덤 숫자
+        Random random = new Random();
+        int idx = random.nextInt(500)+1; // 1-500 사이의 랜덤 숫자
         UUID fortuneCookieUuid = UUID.randomUUID();
 
         log.info("🥨 행운의 문구를 가져옵니다.");
