@@ -41,6 +41,37 @@ export default function FortuneResultPage() {
     } catch {}
   };
 
+  // 조용한 복사 + 폴백
+const copySilently = async (text: string) => {
+  try {
+    await navigator.clipboard.writeText(text); // HTTPS + 사용자 클릭 이벤트 내에서만!
+    // 아무것도 안 띄움 (원하면 아래에 토스트 상태만 켜기)
+  } catch {
+    // 폴백: iOS Safari 등에서 clipboard API가 실패하면
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    ta.setAttribute("readonly", "");
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand("copy"); } finally {
+      document.body.removeChild(ta);
+    }
+  }
+};
+
+const [copied, setCopied] = useState(false);
+
+const onCopyLink = async () => {
+  if (!data) return;
+  const url = new URL(data.shareUrl, window.location.origin).toString();
+  await copySilently(url);
+  setCopied(true);
+  setTimeout(() => setCopied(false), 1000);
+};
+
+
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-[#fff5e6] text-center px-4">
@@ -72,10 +103,18 @@ export default function FortuneResultPage() {
       <div className="mt-5 flex gap-3">
         {/* 공유링크 타고온 경우에는 공유하기 버튼 삭제 */}
         {!isSharedView && (
-        <button onClick={onShare} className="text-sm px-3 py-3 bg-orange-400 text-white rounded-lg shadow hover:bg-orange-500">
+          <>
+        <button onClick={onCopyLink} className="text-sm px-3 py-3 bg-orange-400 text-white rounded-lg shadow hover:bg-orange-500">
           공유하기
         </button>
-          )}
+
+        {copied && (
+          <div className="fixed bottom-10 left-1/2 -translate-x-1/2 rounded-md bg-black/80 text-white text-sm px-3 py-2">
+            클립보드에 복사했어요.
+          </div>
+        )}
+        </>
+        )}
         <button onClick={() => navigate("/fortuneCookie")} className="text-sm px-3 py-3 bg-orange-400 text-white rounded-lg shadow hover:bg-orange-500">
           {isSharedView ? "나도열기" : "다시하기"}
         </button>
