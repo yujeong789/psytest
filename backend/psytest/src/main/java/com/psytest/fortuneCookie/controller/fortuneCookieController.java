@@ -11,7 +11,6 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/fortuneCookie")
-@CrossOrigin(origins = "*")
 public class fortuneCookieController {
 
     private final fortuneCookieService fortuneCookieService;
@@ -33,6 +32,7 @@ public class fortuneCookieController {
         FortuneCookieResponse fortuneCookieResponse = fortuneCookieService.getByShareId(uuid);
         return ResponseUtil.success(fortuneCookieResponse);
     }
+
 
 
 }
