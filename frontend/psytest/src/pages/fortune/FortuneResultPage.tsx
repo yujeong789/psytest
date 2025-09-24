@@ -34,8 +34,8 @@ export default function FortuneResultPage() {
     if (!data) return;
     const absolute = new URL(data.shareUrl, window.location.origin).toString();
     try {
-      if (navigator.share) await navigator.share({ url: absolute });
-      else await navigator.clipboard.writeText(absolute);
+      navigator.clipboard.writeText(absolute);
+      alert("링크가 클립보드에 복사되었습니다.");
       // 성공 토스트 등 추가 가능
     } catch {}
   };

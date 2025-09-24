@@ -13,9 +13,9 @@ export default function HomePage() {
           <h1 className="m-3 text-xl sm:text-2xl md:text-3xl font-bold">행운의 쿠키</h1>
           <button
             onClick={() => navigate("/fortuneCookie")}
-            className="m-3 px-2 py-2 text-xs bg-orange-400 text-white rounded-lg shadow hover:bg-orange-500"
+            className="text-sm px-3 py-3 bg-orange-400 text-white rounded-lg shadow hover:bg-orange-5000"
           >
-            쿠키 깨러가기
+            쿠키 깨기
           </button>
         </div>
 
@@ -24,9 +24,9 @@ export default function HomePage() {
           <h1 className="m-3 text-xl sm:text-2xl md:text-3xl font-bold">오늘의 운세 (준비중...)</h1>
           <button
             onClick={() => navigate("/")}
-            className="m-3 px-2 py-2 text-xs bg-orange-400 text-white rounded-lg shadow hover:bg-orange-500"
+            className="text-sm px-3 py-3 bg-orange-400 text-white rounded-lg shadow hover:bg-orange-500"
           >
-            운세 보러가기
+            운세 보기
           </button>
         </div>
         
