@@ -9,6 +9,7 @@ export function AppRouter() {
                 <Route path="/" element={<HomePage />} />
                 <Route path="/fortuneCookie" element={<FortunePage />} />
                 <Route path="/fortuneCookieResult" element={<FortuneResultPage />} />
+                <Route path="/fortuneCookieResult/:id" element={<FortuneResultPage />} />
             </Routes>
         </BrowserRouter>
     );
