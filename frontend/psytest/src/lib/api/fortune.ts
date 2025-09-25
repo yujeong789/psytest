@@ -11,13 +11,15 @@ const api = axios.create({
 type FortuneResponse = { 
   fortuneCookieUuid: string; 
   fortune: string; 
-    luck: number;
+  luck: number;
+  keyword: string;
 };
 
 export type FortunePayload = { 
   id: string; 
   fortune: string; 
   luck: number;
+  keyword: string;
   shareUrl: string;
 };
 
@@ -29,6 +31,7 @@ export const postFortuneCookieOpen = async (): Promise<FortunePayload> => {
     id: d.fortuneCookieUuid,
     fortune: d.fortune,
     luck: d.luck,
+    keyword: d.keyword,
     // 공유 링크 규칙에 맞춰서 한 곳에서 생성 (여기서는 /fortuneCookieResult/:id 사용)
     shareUrl: `/fortuneCookieResult/${encodeURIComponent(d.fortuneCookieUuid)}`,
   };
@@ -42,6 +45,7 @@ export const getFortuneCookieSharedResult = async (shareId: string): Promise<For
     id: d.fortuneCookieUuid,
     fortune: d.fortune,
     luck: d.luck,
+    keyword: d.keyword,
     shareUrl: `/fortuneCookieResult/${encodeURIComponent(d.fortuneCookieUuid)}`,
   };
 };

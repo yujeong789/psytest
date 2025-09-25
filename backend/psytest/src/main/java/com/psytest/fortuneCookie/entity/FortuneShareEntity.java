@@ -30,6 +30,9 @@ public class FortuneShareEntity {
     @Column(name = "fortune_luck", nullable = false)
     private Integer fortuneLuck;
 
+    @Column(name = "keyword", nullable = false)
+    private String keyword;
+
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
