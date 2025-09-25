@@ -11,8 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Slf4j
@@ -20,6 +19,31 @@ import java.util.concurrent.ThreadLocalRandom;
 @RequiredArgsConstructor
 public class fortuneCookieService {
 
+    private static final Map<Integer, String> KEYWORDS;
+    static {
+        Map<Integer, String> m = new LinkedHashMap<>();
+        m.put(1,  "😌 휴식");
+        m.put(2,  "🧹 정리");
+        m.put(3,  "🚶‍♀️ 산책");
+        m.put(4,  "💧 수분");
+        m.put(5,  "🌬️ 호흡");
+        m.put(6,  "🙏 감사");
+        m.put(7,  "📵 디지털 다이어트");
+        m.put(8,  "📚 배움");
+        m.put(9,  "🤝 연결");
+        m.put(10, "🔁 루틴 리셋");
+        m.put(11, "🎯 집중");
+        m.put(12, "🧠 마음챙김");
+        m.put(13, "🗂️ 계획");
+        m.put(14, "💤 수면");
+        m.put(15, "🧘 스트레칭");
+        m.put(16, "🍎 건강 식단");
+        m.put(17, "✍️ 기록/저널");
+        m.put(18, "🎧 음악");
+        m.put(19, "☀️ 햇빛 쬐기");
+        m.put(20, "🧑‍🍳 취미");
+        KEYWORDS = Collections.unmodifiableMap(m);
+    }
     private final fortuneCookieCache fortuneCookieCache;
     private final fortuneShareRepository fortuneShareRepository;
 
@@ -47,18 +71,21 @@ public class fortuneCookieService {
                 : r.nextInt(1, 71);       // 1~80
 
         // 행운
-        int color = random.nextInt(20)+1;
+        int keywordIdx = random.nextInt(KEYWORDS.size())+1;
+        String keyword = KEYWORDS.get(keywordIdx);
 
         FortuneShareEntity fortuneShareEntity = new FortuneShareEntity();
         fortuneShareEntity.setFortuneCookieUuid(fortuneCookieUuid);
         fortuneShareEntity.setFortuneLuck(luck);
         fortuneShareEntity.setFortuneCookieId(idx);
+        fortuneShareEntity.setKeyword(keyword);
         fortuneShareRepository.save(fortuneShareEntity);
         log.info("🥨 DB 저장 성공했습니다.");
         return new FortuneCookieResponse(
                 fortuneCookieUuid,
                 fortuneCookieCacheResponse.fortune(),
-                fortuneShareEntity.getFortuneLuck()
+                fortuneShareEntity.getFortuneLuck(),
+                fortuneShareEntity.getKeyword()
         );
     }
 
@@ -75,7 +102,8 @@ public class fortuneCookieService {
         return new FortuneCookieResponse(
                 fortuneShareEntity.getFortuneCookieUuid(),
                 fortuneCookieCacheResponse.fortune(),
-                fortuneShareEntity.getFortuneLuck()
+                fortuneShareEntity.getFortuneLuck(),
+                fortuneShareEntity.getKeyword()
         );
     }
 }
