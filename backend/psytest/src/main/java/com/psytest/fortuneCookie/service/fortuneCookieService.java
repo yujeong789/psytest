@@ -42,9 +42,9 @@ public class fortuneCookieService {
         // 행운지수
         ThreadLocalRandom r = ThreadLocalRandom.current();
         // 70%는 81~100, 30%는 1~80
-        int luck = (r.nextInt(10) < 3)    // 0~9 중 0..6 == 70%
-                ? r.nextInt(81, 101)      // 상한 미포함이므로 101
-                : r.nextInt(1, 81);       // 1~80
+        int luck = (r.nextInt(10) > 3)    // 0~9 중 0..6 == 70%
+                ? r.nextInt(71, 101)      // 상한 미포함이므로 101
+                : r.nextInt(1, 71);       // 1~80
 
         // 행운
         int color = random.nextInt(20)+1;
