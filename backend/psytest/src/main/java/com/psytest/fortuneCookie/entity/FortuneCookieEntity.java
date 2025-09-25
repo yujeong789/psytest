@@ -18,4 +18,7 @@ public class FortuneCookieEntity {
 
     @Column(nullable = false, length=1000)
     private String fortune;
+
+
+
 }
