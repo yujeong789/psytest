@@ -81,7 +81,7 @@ export default function FortuneResultPage() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-[#fff5e6] text-center">
       <motion.div
-        className="-mt-10 mb-6"
+        className="mb-2"
       // style={{ width: "40%", height: "auto" }}
       // 살짝 둥둥 떠다니기 + 기울기
         animate={{y: [0, -5, 0], rotate: [0, 1, 0, -1, 0]}}
