@@ -18,7 +18,9 @@ jobs:
       - name: Set up Tailscale
         uses: tailscale/github-action@v2
         with:
-          authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+          tags: ci    # 여기서는 'ci'만; 액션이 자동으로 'tag:' 붙여줌
 
       # 3. SSH 키 저장
       # - name: Save SSH key
