@@ -4,10 +4,17 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { postFortuneCookieOpen, getFortuneCookieSharedResult, type FortunePayload } from "@/lib/api/fortune";
 import { motion } from "framer-motion";
 import brokenCookieImg from "@/assets/img/broken_cookie.svg";
+import cookieUrl from "@/assets/img/cookie.svg?url";
 import CopyIcon from "@/assets/icon/copy.svg?react";
 import RefreshIcon from "@/assets/icon/refresh.svg?react";
 
 export default function FortuneResultPage() {
+  useEffect(() => {
+    // 사전 로드 (broken_cookie는 미리 로드하면 안됨)
+    const img = new Image();
+    img.src = cookieUrl;
+  }, []);
+
   const { id } = useParams(); // 공유 진입이면 값 있음
   const isSharedView = !!id; // 공유링크로 진입 여부 체크
   const navigate = useNavigate();
