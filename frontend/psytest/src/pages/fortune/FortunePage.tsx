@@ -25,6 +25,7 @@ export default function FortunePage() {
     ]);
 
         // 결과 페이지로 데이터 넘기기 (state 사용)
+        console.log("쿠키 데이터:", data);
         navigate("/fortuneCookieResult", { state: { fortune: data } });
       } catch (error) {
         console.error("쿠키 불러오기 실패:", error);

@@ -1,6 +1,6 @@
 // src/pages/fortune/FortuneResultPage.tsx
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { postFortuneCookieOpen, getFortuneCookieSharedResult, type FortunePayload } from "@/lib/api/fortune";
 import { motion } from "framer-motion";
 import brokenCookieImg from "@/assets/img/broken_cookie.svg";
@@ -11,12 +11,23 @@ export default function FortuneResultPage() {
   const { id } = useParams(); // 공유 진입이면 값 있음
   const isSharedView = !!id; // 공유링크로 진입 여부 체크
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const [data, setData] = useState<FortunePayload | null>(null);
-  const [loading, setLoading] = useState(true);
+  const passed = (location.state as { fortune?: FortunePayload } | undefined)?.fortune;
+
+  const [data, setData] = useState<FortunePayload | null>(passed ?? null);
+  const [loading, setLoading] = useState(!passed);
   const [error, setError] = useState<string | null>(null);
 
+  const fetchedOnce = useRef(false); // 중복 호출 방지용
+
   useEffect(() => {
+    // 1) 공유 링크면 항상 서버에서 복원
+    // 2) 공유가 아니면, state 없을 때만 서버 호출
+    if (fetchedOnce.current) return;
+    if (!isSharedView && passed) return;
+
+    fetchedOnce.current = true;
     (async () => {
       try {
         setLoading(true);
@@ -99,16 +110,21 @@ export default function FortuneResultPage() {
             <p className="my-2 text-md font-bold text-gray-600">🍀 오늘의 운세 🍀</p>
             <p className="my-2 text-md text-gray-600">{data!.fortune}</p>
           </div>
-          <div className="flex justify-center mt-4 border-t pt-4">
-            {/* 행운의 숫자 */}
-            <div className="px-8 border-r">
-              <h1 className="my-2 text-md font-bold text-gray-600">행운의 숫자</h1>
-              <h1 className="my-2 text-md text-gray-600">34</h1>
+          <div className="flex justify-center mt-4 border-t-2 border-white border-opacity-50 pt-4">
+            {/* 행운 지수 */}
+            <div className="px-8 border-r-2 border-white border-opacity-50 ">
+              <h1 className="my-2 text-sm font-bold text-gray-600">행운 지수</h1>
+              <div className="flex justify-center items-center gap-1">
+                <h1 className="grid place-items-center w-12 h-12 rounded-full text-xl shadow m-2"
+                >
+                  {data!.luck}
+                </h1>
+              </div>
             </div>
             {/* 행운의 색깔 */}
             <div className="px-8">
-              <h1 className="my-2 text-md font-bold text-gray-600">행운의 색깔</h1>
-              <h1 className="my-2 text-md text-gray-600">파랑</h1>
+              <h1 className="my-2 text-sm font-bold text-gray-600">행운의 색깔</h1>
+              <h1 className="my-2 text-md text-gray-600 p-3">파랑</h1>
             </div>
           </div>
         </div>
