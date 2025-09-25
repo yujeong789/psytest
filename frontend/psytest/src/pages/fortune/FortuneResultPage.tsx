@@ -1,9 +1,11 @@
 // src/pages/fortune/FortuneResultPage.tsx
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import brokenCookieImg from "@/assets/broken_cookie.svg";
 import { postFortuneCookieOpen, getFortuneCookieSharedResult, type FortunePayload } from "@/lib/api/fortune";
 import { motion } from "framer-motion";
+import brokenCookieImg from "@/assets/img/broken_cookie.svg";
+import CopyIcon from "@/assets/icon/copy.svg?react";
+import RefreshIcon from "@/assets/icon/refresh.svg?react";
 
 export default function FortuneResultPage() {
   const { id } = useParams(); // 공유 진입이면 값 있음
@@ -68,24 +70,25 @@ export default function FortuneResultPage() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-[#fff5e6] text-center">
       <motion.div
+        className="-mt-10 mb-6"
       // style={{ width: "40%", height: "auto" }}
       // 살짝 둥둥 떠다니기 + 기울기
         animate={{y: [0, -5, 0], rotate: [0, 1, 0, -1, 0]}}
         transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
         whileHover={{ 
-          scale: 1.12, 
+          scale: 1, 
           rotate: 8, 
           transition:{ type: "spring", stiffness: 500, damping: 30 } }}
         whileTap={{
-          scale: 1.12,
-          rotate: 8,
+          scale: 1,
+          rotate: 4,
           transition: { type: "spring", stiffness: 500, damping: 30 } // 탭 반응 쫀득하게
         }}
       >
         <img 
           src={brokenCookieImg} 
           alt="행운의 쿠키" 
-          className="w-[35vw] max-w-[380px] min-w-[200px] h-auto"
+          className="w-[8vw] max-w-[380px] min-w-[120px] h-auto"
         ></img>
       </motion.div>
       <div>
@@ -93,37 +96,60 @@ export default function FortuneResultPage() {
         >
           {/* 운세 내용 */}
           <div className="flex flex-col items-center mb-8">
-            <text className="my-2 text-xl font-bold text-gray-600">🍀오늘의 운세🍀</text>
-            <text className="my-2 text-lg font-bold text-gray-600">{data!.fortune}</text>
+            <p className="my-2 text-md font-bold text-gray-600">🍀 오늘의 운세 🍀</p>
+            <p className="my-2 text-md text-gray-600">{data!.fortune}</p>
           </div>
           <div className="flex justify-center mt-4 border-t pt-4">
             {/* 행운의 숫자 */}
             <div className="px-8 border-r">
-              <h1 className="my-2 text-lg font-bold text-gray-600">행운의 숫자</h1>
-              <h1 className="my-2 text-lg font-bold text-gray-600">34</h1>
+              <h1 className="my-2 text-md font-bold text-gray-600">행운의 숫자</h1>
+              <h1 className="my-2 text-md text-gray-600">34</h1>
             </div>
             {/* 행운의 색깔 */}
             <div className="px-8">
-              <h1 className="my-2 text-lg font-bold text-gray-600">행운의 색깔</h1>
-              <h1 className="my-2 text-lg font-bold text-gray-600">파랑</h1>
+              <h1 className="my-2 text-md font-bold text-gray-600">행운의 색깔</h1>
+              <h1 className="my-2 text-md text-gray-600">파랑</h1>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="pt-20 flex gap-3">
-        <button onClick={() => navigate("/fortuneCookie")} className="text-sm px-3 py-3 bg-orange-400 text-white rounded-lg shadow hover:bg-orange-500">
-          {isSharedView ? "나도열기" : "다시하기"}
+      <div className="mt-20 flex items-center justify-center gap-3">
+        {/* 다시하기 버튼 */}
+        <button
+          onClick={() => navigate("/fortuneCookie")}
+          className="group inline-flex items-center gap-2 px-3 py-3 rounded-3xl bg-white hover:bg-orange-400 text-white"
+        >
+          <RefreshIcon 
+            className="
+              w-5 h-5
+              [&_*]:stroke-orange-500 
+              [&_*]:[stroke-width:3px]
+              group-hover:[&_*]:stroke-white
+              transition-colors
+            " 
+            aria-hidden 
+          />
         </button>
-        {/* 공유링크 타고온 경우에는 공유하기 버튼 삭제 */}
+
+        {/* 링크복사 버튼 */}
         {!isSharedView && (
-        <button onClick={onShare} className="text-sm px-3 py-3 bg-orange-400 text-white rounded-lg shadow hover:bg-orange-500">
-          공유하기
+        <button 
+          onClick={onShare} 
+          className="group inline-flex items-center gap-2 px-3 py-3 rounded-3xl bg-white hover:bg-orange-400 text-white"
+        >
+          <CopyIcon 
+            className="
+              w-6 h-6
+              [&_*]:stroke-orange-500 
+              [&_*]:[stroke-width:2.5px]
+              group-hover:[&_*]:stroke-white
+              transition-colors
+            " 
+            aria-hidden 
+          />
         </button>
         )}
-        {/* <button onClick={() => navigate("/")} className="text-sm px-3 py-3 bg-orange-400 text-white rounded-lg shadow hover:bg-orange-500">
-          목록보기
-        </button> */}
       </div>
     </div>
   );

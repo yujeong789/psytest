@@ -1,44 +1,29 @@
 // src/pages/fortune/FortunePage.tsx
 import { useNavigate } from "react-router-dom";
-import cookieImg from "@/assets/cookie.svg";
-import cookieGif from "@/assets/cookie.gif";
+import cookieImg from "@/assets/img/cookie.svg";
 import { postFortuneCookieOpen } from "@/lib/api/fortune";
 import { useState } from "react";
 import { motion } from "framer-motion";
 
-function Sparkle({
-   x, y, size, delay 
-  }: { x: number; y: number; size: number; delay: number }) {
-  return (
-    <motion.span
-      className="absolute pointer-events-none drop-shadow-[0_0_6px_rgba(255,200,100,0.8)]"
-      style={{ left: `calc(50% + ${x}px)`, top: `calc(50% + ${y}px)` }}
-      initial={{ scale: 0.6, opacity: 0 }}
-      animate={{ scale: [0.8, 1.25, 0.9], opacity: [0, 1, 0.2], rotate: [0, 180, 360] }}
-      transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut", delay }}
-    >
-      <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-        <defs>
-          <radialGradient id="g" cx="50%" cy="50%" r="60%">
-            <stop offset="0%" stopColor="#FFE29A"/>
-            <stop offset="60%" stopColor="#FFC66A"/>
-            <stop offset="100%" stopColor="#FF9F43"/>
-          </radialGradient>
-        </defs>
-        <path d="M12 2 L14.5 8.5 L22 12 L14.5 15.5 L12 22 L9.5 15.5 L2 12 L9.5 8.5 Z" fill="url(#g)"/>
-      </svg>
-    </motion.span>
-  );
-}
+import { Sparkle } from "@/conmponents/fortune/Sparkle";
+import { SparklesOverlay } from "@/conmponents/fortune/SparklesOverlay";
 
 export default function FortunePage() {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
-
+    const wait = (ms: number) => new Promise<void>((res) => setTimeout(res, ms));
+    
     const handleOpenCookie = async () => {
       try {
         setLoading(true);
-        const data = await postFortuneCookieOpen(); // API 호출
+        // const data = await postFortuneCookieOpen(); // API 호출
+
+        const MIN_WAIT = 60; // 1.2초 대기
+        const [data] = await Promise.all([
+      postFortuneCookieOpen(), // 실제 API
+      wait(MIN_WAIT),         // 최소 1.2초 딜레이
+    ]);
+
         // 결과 페이지로 데이터 넘기기 (state 사용)
         navigate("/fortuneCookieResult", { state: { fortune: data } });
       } catch (error) {
@@ -104,29 +89,20 @@ export default function FortunePage() {
           />
           {loading && (
             <div 
-            className="absolute inset-0 z-50 grid place-items-center rounded-2xl
-              bg-black/10 backdrop-blur-sm cursor-wait"
+              className="absolute inset-0 z-50 grid place-items-center rounded-2xl
+                backdrop-blur-sm cursor-wait"
               role="status"
               aria-live="polite"
               aria-busy="true"
             >
-              <figure className="flex flex-col items-center gap-3">
-                <picture>
-                  <img
-                    src={cookieGif}
-                    alt="포춘쿠키를 열고 있어요"
-                    className="h-40 sm:h-52 md:h-64 w-auto max-w-full"
-                    decoding="async"
-                  />
-                </picture>
-              </figure>
+              <SparklesOverlay />
             </div>
           )}
         </motion.button>
 
         <div className="flex flex-col items-center mt-2">
           <h1 className="my-3 text-xl sm:text-2xl md:text-2xl font-bold text-orange-600">Fortune Cookie</h1>
-          <text className="mb-5 text-lg font-bold text-gray-600">🍀오늘의 운세를 확인해보세요!🍀</text>
+          <p className="mb-5 text-sm font-bold text-gray-600">🍀 오늘의 운세를 확인해보세요! 🍀</p>
         </div>
 
       </div>  
