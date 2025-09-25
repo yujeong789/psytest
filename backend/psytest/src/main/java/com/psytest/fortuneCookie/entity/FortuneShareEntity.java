@@ -27,6 +27,9 @@ public class FortuneShareEntity {
     @Column(name = "fortune_cookie_id", nullable = false)
     private Integer fortuneCookieId;
 
+    @Column(name = "fortune_luck", nullable = false)
+    private Integer fortuneLuck;
+
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;

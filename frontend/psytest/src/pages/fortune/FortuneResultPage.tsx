@@ -115,7 +115,7 @@ export default function FortuneResultPage() {
             <div className="px-8 border-r-2 border-white border-opacity-50 ">
               <h1 className="my-2 text-sm font-bold text-gray-600">행운 지수</h1>
               <div className="flex justify-center items-center gap-1">
-                <h1 className="grid place-items-center w-12 h-12 rounded-full text-xl shadow m-2"
+                <h1 className="grid place-items-center w-12 h-12 rounded-full text-md shadow m-2"
                 >
                   {data!.luck}
                 </h1>
@@ -123,8 +123,10 @@ export default function FortuneResultPage() {
             </div>
             {/* 행운의 색깔 */}
             <div className="px-8">
-              <h1 className="my-2 text-sm font-bold text-gray-600">행운의 색깔</h1>
-              <h1 className="my-2 text-md text-gray-600 p-3">파랑</h1>
+              <h1 className="my-2 text-sm font-bold text-gray-600">오늘의 키워드</h1>
+              <div className="flex justify-center items-center gap-1">
+                <h1 className="grid place-items-center w-12 h-12 rounded-full text-md shadow m-2">모험</h1>
+              </div>
             </div>
           </div>
         </div>

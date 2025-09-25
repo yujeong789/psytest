@@ -4,5 +4,6 @@ import java.util.UUID;
 
 public record FortuneCookieResponse(
         UUID fortuneCookieUuid,
-        String fortune
+        String fortune,
+        Integer luck
 ) {}
