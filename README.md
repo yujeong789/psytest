@@ -18,3 +18,28 @@
 - 🍪 포춘쿠키 개봉 애니메이션
 - 📊 오늘의 운세 지수 / 키워드 제공
 - 🔗 결과 공유(링크 복사)
+
+## 기능 개선
+- 원인: 서버 캐시 + preload + 프론트 애니메이션
+- 결과: **평균 응답시간 200ms → 40ms (–80%)**
+- (측정 조건) Chrome DevTools, 동일 네트워크, **n=20**, 캐시 워밍 후(304 포함)
+
+### 성능 요약
+| 지표 | 개선 전 | 개선 후 | 비고 |
+|---|---:|---:|---|
+| 평균 API 응답 | 200ms | **40ms** | n=20, 워밍 후 |
+| 첫 문서 로드 | 636ms | **11ms** | DevTools |
+| 주요 정적 리소스 | 수십~수백 ms | **10~40ms** | preload/304 효과 |
+
+- 백엔드: **in-memory 캐시(TTL)** 적용으로 반복 연산 제거
+- 프론트: **로딩 애니메이션**으로 체감 지연 상쇄, **`<link rel="preload">`** 적용
+  
+<p align="center">
+  <div> <개선 전> </div>
+  <div> <img width="754" height="283" alt="image" src="https://github.com/user-attachments/assets/53b31bd4-1141-40fc-8472-2b88312bfd65" /> </div>
+</p>
+<p align="center">
+  <div> <개선 후> </div>
+  <div> <img width="754" height="308" alt="image" src="https://github.com/user-attachments/assets/0a86e90e-735f-4fd6-8f1c-0ce59d838deb" /> </div>
+</p>
+
