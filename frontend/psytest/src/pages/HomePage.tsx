@@ -12,7 +12,7 @@ export default function HomePage() {
   useEffect(() => {
     const warm = async () => {
       try {
-        await api.head("/fortuneCookie");
+        await api.head("/fortuneCookie/ping");
       } catch {
         // fallback: 동일 출처 루트로 아주 가벼운 GET (HTML 받지만 버림)
         fetch("/", { cache: "no-store" }).catch(() => {});
