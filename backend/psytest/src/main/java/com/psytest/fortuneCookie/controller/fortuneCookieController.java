@@ -19,6 +19,12 @@ public class fortuneCookieController {
         this.fortuneCookieService = fortuneCookieService;
     }
 
+    @Operation(summary = "핑 보내기", description = "서버로 핑 연결을 통해 빠른 속도 유지하기")
+    @GetMapping("/ping")
+    public ResponseEntity<?> ping() {
+        return ResponseUtil.success();
+    }
+
     @Operation(summary = "쿠키 깨트리기", description = "쿠키를 클릭해서 행운의 문구를 볼 수 있도록 데이터베이스에서 랜덤으로 가져옵니다.")
     @PostMapping
     public ResponseEntity<?> fortuneCookieOpen() {
