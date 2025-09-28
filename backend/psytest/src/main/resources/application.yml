@@ -19,9 +19,12 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       maximum-pool-size: 10
-      minimum-idle: 2
+      minimum-idle: 2 # 유휴 연결 3개는 항상 유지
       connection-timeout: 30000
       validation-timeout: 5000
+      idle-timeout: 240000 # 4분(밀리초), DB wait_timeout보다 짧게
+      keepalive-time: 300000     # 5분마다 ping으로 연결 살리기
+      max-lifetime: 1800000      # 30분마다 연결 순환
 
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
