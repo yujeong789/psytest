@@ -1,7 +1,25 @@
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { api } from "@/lib/api/fortune";
+
 
 export default function HomePage() {
   const navigate = useNavigate();   
+
+  // 아주 가벼운 워밍업: 앱 진입 시 1회
+  // - 우선 HEAD /fortuneCookie로 연결/스레드풀/JIT 살짝 깨움
+  // - 서버가 HEAD 미지원(405)이면 / GET으로 대체(연결만 열어도 도움)
+  useEffect(() => {
+    const warm = async () => {
+      try {
+        await api.head("/fortuneCookie");
+      } catch {
+        // fallback: 동일 출처 루트로 아주 가벼운 GET (HTML 받지만 버림)
+        fetch("/", { cache: "no-store" }).catch(() => {});
+      }
+    };
+    warm();
+  }, []);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-[#fff5e6] text-center px-4">
