@@ -5,18 +5,18 @@ export default function HomePage() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-[#fff5e6] text-center px-4">
-      <div className="text-xmd font-bold">🥠🥠🥠🥠🥠🥠🥠</div>
-      <div className="text-xmd font-bold">🥠🥠🥠🥠🥠🥠🥠</div>
-      <div className="text-md font-bold ">🥠🥠포춘쿠키🥠🥠</div>
-      <div className="text-xmd font-bold">🥠🥠🥠🥠🥠🥠🥠</div>
-      <div className="text-md font-bold mb-4">🥠🥠🥠🥠🥠🥠🥠</div>
+      <div className="text-lg font-bold">🥠🥠🥠🥠🥠🥠🥠</div>
+      <div className="text-lg font-bold">🥠🥠🥠🥠🥠🥠🥠</div>
+      <div className="text-lg font-bold ">🥠🥠포춘쿠키🥠🥠</div>
+      <div className="text-lg font-bold">🥠🥠🥠🥠🥠🥠🥠</div>
+      <div className="text-lg font-bold mb-4">🥠🥠🥠🥠🥠🥠🥠</div>
       <div className="justify-center">
         
         {/* 첫번째 버튼 */}
         <div className="flex  items-center justify-between">
           <button
             onClick={() => navigate("/fortuneCookie")}
-            className="text-xs p-1 bg-orange-400 rounded-lg shadow text-orange-500 bg-white hover:bg-orange-400 hover:text-white"
+            className="text-sm p-2 bg-orange-400 rounded-lg shadow text-orange-500 bg-white hover:bg-orange-400 hover:text-white"
           >
             {/* group inline-flex items-center gap-2 px-3 py-3 rounded-3xl bg-white hover:bg-orange-400 text-white */}
             🔨 깨러가기 🔨
