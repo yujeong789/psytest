@@ -47,3 +47,49 @@
 <img width="377" height="190" alt="image" src="https://github.com/user-attachments/assets/cea59545-76ab-4802-a4b2-f2af79b79d77" />
 
 <img width="379" height="199" alt="image" src="https://github.com/user-attachments/assets/0b4a9c75-0212-4c0d-8dd9-4005c1a0ec9d" />
+
+
+- Nginx로 정적 자산 최적화(캐시/압축/SPA 라우팅)
+- 이미지 용량 변경 
+```
+  server {
+  listen 80;
+  server_name _;
+  root /usr/share/nginx/html;
+  etag on;
+
+  # 정적 파일: 강력 캐시(파일명에 해시 전제)
+  location ~* \.(js|css|svg|png|jpg|jpeg|gif|webp|ico|woff2?)$ {
+    expires 1y;
+    add_header Cache-Control "public, max-age=31536000, immutable" always;
+    try_files $uri =404;
+  }
+
+  # HTML은 항상 최신
+  location ~* \.html$ {
+    add_header Cache-Control "no-cache" always;
+    try_files $uri =404;
+  }
+
+  # SPA 라우팅
+  location / {
+    try_files $uri $uri/ /index.html;
+  }
+
+  # API 프록시
+  location /api/ {
+    proxy_pass http://backend:8080/;
+    proxy_http_version 1.1;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_set_header Connection "";
+    proxy_read_timeout 60s;
+  }
+}
+
+```
+<img width="799" height="465" alt="image" src="https://github.com/user-attachments/assets/f78cf221-13a2-4b3a-a29a-f9a98745bd0e" />
+<img width="792" height="565" alt="image" src="https://github.com/user-attachments/assets/514ecc51-3837-441c-8a61-9b4eaf0ef2d4" />
+
