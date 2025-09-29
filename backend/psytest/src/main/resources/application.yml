@@ -19,7 +19,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       maximum-pool-size: 10
-      minimum-idle: 5 # 유휴 연결 5개는 항상 유지
+      minimum-idle: 3 # 유휴 연결 3개는 항상 유지
       connection-timeout: 30000
       validation-timeout: 5000
       idle-timeout: 600000      # 10분 (keepalive보다 길게)
